@@ -42,4 +42,22 @@ describe "User pages" do
         end
       end
     end
+    
+    describe "edit" do
+        let(:user) { User.create(name: 'test', email: 'testuser@test.de', password: 'password', password_confirmation: 'password') }
+        before { visit edit_user_path(user) }
+
+        describe "page" do
+          it { should have_selector('h1',    text: "Edit user") }
+          it { should have_selector('title', text: "Edit user") }
+          it { should have_link('change', href: 'http://gravatar.com/emails') }
+        end
+
+        describe "with invalid information" do
+          let(:error) { '1 error prohibited this user from being saved' }
+          before { click_button "Update" }
+
+          it { should have_content(error) }
+       end
+      end
 end
